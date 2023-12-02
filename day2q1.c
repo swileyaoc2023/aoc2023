@@ -38,11 +38,11 @@ int checkbins(const char *s,const char *names,const int max[]) {
 	}
 	return 0;
 }
-int idifinvalid(const char *s) {
+int idifvalid(const char *s) {
 	int id=atoi(fieldn(1,s));
 	if(checkbins(fieldn(2,s),"red green blue",(int[]){12,13,14}))
-		return id;
-	return 0;
+		return 0;
+	return id;
 }
 
 void test(void) {
@@ -57,9 +57,12 @@ void test(void) {
 	tz(checkbins("3 aa 4 bb 4 cc","aa bb cc",(int[]){3,4,5}));
 	tz(checkbins("3 aa 4 bb 5 cc","aa bb cc",(int[]){3,4,5}));
 	tz(checkbins("3 aa 4 bb 6 cc","aa bb cc",(int[]){3,4,5})-1);
-	tz(idifinvalid("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")-0);
-	tz(idifinvalid("Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red")-3);
-	tz(idifinvalid("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")-0);
+	tz(idifvalid("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")-1);
+	tz(idifvalid("Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red"));
+	tz(idifvalid("Game 9: 8 green. 12 red")-9);
+	tz(idifvalid("Game 87: 10 blue, 7 red, 1 green; 12 blue, 14 red; 7 blue, 7 red"));
+	tz(idifvalid("Game 9: 8 green. 13 red"));
+	tz(idifvalid("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")-5);
 	puts("");
 	if(!F) return;
 	printf("%d fails\n",F);
@@ -68,10 +71,12 @@ void test(void) {
 void challenge(void) {
 	char buf[LINE_MAX];
 	FILE *f = fopen("input.day2","r");
+	//FILE *f = fopen("input","r");
 	if(f==NULL) {printf("Please Download input.day2\n");exit(1);}
 	int sum=0;
 	while(fgets(buf,LINE_MAX,f)) {
-		int cur=idifinvalid(buf);
+		buf[strlen(buf)-1]='\0';
+		int cur=idifvalid(buf);
 		sum+=cur;
 		printf("%d %d %s\n",cur,sum,buf);
 	}
