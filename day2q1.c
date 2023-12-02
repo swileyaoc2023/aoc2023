@@ -71,7 +71,9 @@ void challenge(void) {
 	if(f==NULL) {printf("Please Download input.day2\n");exit(1);}
 	int sum=0;
 	while(fgets(buf,LINE_MAX,f)) {
-		puts(buf);
+		int cur=idifinvalid(buf);
+		sum+=cur;
+		printf("%d %d %s\n",cur,sum,buf);
 	}
 }
 int main() {
